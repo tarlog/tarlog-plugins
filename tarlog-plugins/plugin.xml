@@ -21,6 +21,15 @@
                label="Open in Windows Explorer">
          </action>
       </objectContribution>
+      <objectContribution
+            id="tarlog-plugins.objectContribution1"
+            objectClass="org.eclipse.core.resources.IContainer">
+         <action
+               class="tarlog.eclipse.plugins.openwe.OpenCommandPrompt"
+               id="tarlog-plugins.action2"
+               label="Open in Command Prompt">
+         </action>
+      </objectContribution>
    </extension>
 
 </plugin>
