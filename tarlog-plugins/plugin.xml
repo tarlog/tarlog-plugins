@@ -11,23 +11,37 @@
                id="tarlog-plugins.action.openWindowsExplorer.iresource"
                label="Open in Windows Explorer">
          </action>
-      </objectContribution>
-      <objectContribution
-            id="tarlog-plugins.objectContribution.IType"
-            objectClass="org.eclipse.jdt.core.IType">
-         <action
-               class="tarlog.eclipse.plugins.openwe.OpenInWindowsExplorerAction"
-               id="tarlog-plugins.action.openWindowsExplorer.itype"
-               label="Open in Windows Explorer">
-         </action>
-      </objectContribution>
-      <objectContribution
-            id="tarlog-plugins.objectContribution1"
-            objectClass="org.eclipse.core.resources.IContainer">
          <action
                class="tarlog.eclipse.plugins.openwe.OpenCommandPrompt"
                id="tarlog-plugins.action2"
                label="Open in Command Prompt">
+         </action>
+      </objectContribution>
+      <objectContribution
+            adaptable="false"
+            id="tarlog-plugins.objectContribution.IJavaElement"
+            objectClass="org.eclipse.jdt.core.IJavaElement">
+         <action
+               class="tarlog.eclipse.plugins.openwe.OpenInWindowsExplorerAction"
+               id="tarlog-plugins.action.openWindowsExplorer.iresource"
+               label="Open in Windows Explorer">
+         </action>
+         <action
+               class="tarlog.eclipse.plugins.openwe.OpenCommandPrompt"
+               id="tarlog-plugins.action2"
+               label="Open in Command Prompt">
+         </action>
+      </objectContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            id="logme"
+            objectClass="org.eclipse.jdt.core.ILocalVariable">
+         <action
+               class="tarlog.eclispe.plugins.logme.LogMeAction"
+               id="tarlog-plugins.logMeAction"
+               label="Log Me">
          </action>
       </objectContribution>
    </extension>

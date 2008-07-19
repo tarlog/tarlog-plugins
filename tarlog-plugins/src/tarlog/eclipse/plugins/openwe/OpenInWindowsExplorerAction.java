@@ -1,28 +1,21 @@
 package tarlog.eclipse.plugins.openwe;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-
-import org.eclipse.core.resources.IResource;
 
 /**
  * @author melman
  * 
  */
-public class OpenInWindowsExplorerAction extends ResourceAction<IResource> {
+public class OpenInWindowsExplorerAction extends TreeSelectionAction {
 
     public OpenInWindowsExplorerAction() {
         super();
     }
 
     @Override
-    protected void doAction(IResource resource) {
+    protected void doAction(String path) {
         try {
-            URI locationURI = resource.getLocationURI();
-            File file = new File(locationURI);
-            String absolutePath = file.getAbsolutePath();
-            Runtime.getRuntime().exec("explorer ,/select, " + absolutePath);
+            Runtime.getRuntime().exec("explorer ,/select, " + path);
         } catch (IOException e) {
             e.printStackTrace();
         }
