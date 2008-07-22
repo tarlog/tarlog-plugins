@@ -51,6 +51,7 @@
       <template
             autoinsert="true"
             contextTypeId="java-statements"
+            description="Adds debug statement"
             id="tarlog-plugins.template.debug"
             name="debug">
          <pattern>
@@ -62,10 +63,33 @@
       <template
             autoinsert="true"
             contextTypeId="java-members"
+            description="Adds logger for commons-logging"
             id="tarlog-plugins.template.logger"
             name="logger">
          <pattern>
             private static final Log logger = LogFactory.getLog(${enclosing_type}.class);
+         </pattern>
+      </template>
+      <template
+            autoinsert="true"
+            contextTypeId="java-statements"
+            description="Adds trace statement"
+            id="tarlog-plugins.template.trace"
+            name="trace">
+         <pattern>
+            if (logger.isTraceEnabled()) {
+    logger.trace(String.format(&quot;${cursor}&quot;));
+}
+         </pattern>
+      </template>
+      <template
+            autoinsert="true"
+            contextTypeId="java-statements"
+            description="Adds format statement"
+            id="tarlog-plugins.template.format"
+            name="format">
+         <pattern>
+            String.format(&quot;${cursor}&quot;))
          </pattern>
       </template>
    </extension>
