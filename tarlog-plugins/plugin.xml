@@ -4,6 +4,7 @@
    <extension
          point="org.eclipse.ui.popupMenus">
       <objectContribution
+            adaptable="false"
             id="tarlog-plugins.objectContribution.IResource"
             objectClass="org.eclipse.core.resources.IResource">
          <action
@@ -37,13 +38,36 @@
          point="org.eclipse.ui.popupMenus">
       <objectContribution
             id="logme"
-            objectClass="org.eclipse.jdt.core.ILocalVariable">
+            objectClass="org.eclipse.jdt.internal.ui.javaeditor.JavaEditor">
          <action
                class="tarlog.eclispe.plugins.logme.LogMeAction"
                id="tarlog-plugins.logMeAction"
                label="Log Me">
          </action>
       </objectContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors.templates">
+      <template
+            autoinsert="true"
+            contextTypeId="java-statements"
+            id="tarlog-plugins.template.debug"
+            name="debug">
+         <pattern>
+            if (logger.isDebugEnabled()) {
+    logger.debug(String.format("${cursor}"));
+}
+         </pattern>
+      </template>
+      <template
+            autoinsert="true"
+            contextTypeId="java-members"
+            id="tarlog-plugins.template.logger"
+            name="logger">
+         <pattern>
+            private static final Log logger = LogFactory.getLog(${enclosing_type}.class);
+         </pattern>
+      </template>
    </extension>
 
 </plugin>
