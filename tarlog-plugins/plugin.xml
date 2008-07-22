@@ -51,7 +51,7 @@
       <template
             autoinsert="true"
             contextTypeId="java-statements"
-            description="Adds debug statement"
+            description="Adds debug logging statement"
             id="tarlog-plugins.template.debug"
             name="debug">
          <pattern>
@@ -73,7 +73,7 @@
       <template
             autoinsert="true"
             contextTypeId="java-statements"
-            description="Adds trace statement"
+            description="Adds trace logging statement"
             id="tarlog-plugins.template.trace"
             name="trace">
          <pattern>
@@ -90,6 +90,36 @@
             name="format">
          <pattern>
             String.format(&quot;${cursor}&quot;))
+         </pattern>
+      </template>
+      <template
+            autoinsert="true"
+            contextTypeId="java-statements"
+            description="Adds info logging statement"
+            id="tarlog-plugins.template.info"
+            name="info">
+         <pattern>
+            logger.info(String.format(&quot;${cursor}&quot;));
+         </pattern>
+      </template>
+      <template
+            autoinsert="true"
+            contextTypeId="java-statements"
+            description="Adds error logging statement"
+            id="tarlog-plugins.template.error"
+            name="error">
+         <pattern>
+            logger.error(String.format(&quot;${cursor}&quot;));
+         </pattern>
+      </template>
+      <template
+            autoinsert="true"
+            contextTypeId="java-statements"
+            description="Adds warn logging statement"
+            id="tarlog-plugins.template.warn"
+            name="warn">
+         <pattern>
+            logger.warn(String.format(&quot;${cursor}&quot;));
          </pattern>
       </template>
    </extension>
