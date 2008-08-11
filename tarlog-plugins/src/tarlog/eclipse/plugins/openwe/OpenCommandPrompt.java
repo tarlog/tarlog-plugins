@@ -1,6 +1,3 @@
-/**
- * 
- */
 package tarlog.eclipse.plugins.openwe;
 
 import java.io.File;
