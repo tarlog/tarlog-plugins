@@ -13,10 +13,9 @@ public class OpenCommandPrompt extends TreeSelectionAction {
         super();
     }
 
-
-
     @Override
     protected void doAction(String path) {
+        Process process = null;
         try {
             File file = new File(path);
             if (file.isFile()) {
@@ -25,9 +24,22 @@ public class OpenCommandPrompt extends TreeSelectionAction {
                     path = parentFile.getAbsolutePath();
                 }
             }
-            Process process = Runtime.getRuntime().exec("cmd /k start cmd /k \"cd /d" + path + "\"");
+            process = Runtime.getRuntime().exec(
+                "cmd /k start cmd /k \"cd /d" + path + "\"");
+            Thread.sleep(500);
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                // we don't really care for the exit value
+                // what's important here, to make sure that the first cmd process was terminated
+                process.exitValue();
+            } catch (IllegalThreadStateException e) {
+                // the process was not yet terminated
+                process.destroy();
+            }
         }
     }
 
