@@ -23,8 +23,8 @@ public class OpenCommandPrompt extends TreeSelectionAction {
                     path = parentFile.getAbsolutePath();
                 }
             }
-            Runtime.getRuntime().exec(
-                "cmd /c start cmd /k \"cd /d" + path + "\"");
+            Runtime.getRuntime().exec("cmd /c start cmd", null, new File(path));
+            //Runtime.getRuntime().exec("cmd /c start cmd /k \"cd /d" + path + "\"");
         } catch (IOException e) {
             e.printStackTrace();
         }
