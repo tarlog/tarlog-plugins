@@ -1,16 +1,10 @@
 package tarlog.eclipse.plugins.openwe;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IOpenable;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeSelection;
@@ -18,13 +12,13 @@ import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.internal.ObjectPluginAction;
 
+@SuppressWarnings("restriction")
 public abstract class TreeSelectionAction implements IObjectActionDelegate {
 
     protected TreeSelectionAction() {
         super();
     }
 
-    @SuppressWarnings("unchecked")
     public void run(IAction action) {
         if (action instanceof ObjectPluginAction) {
             ObjectPluginAction objectPluginAction = (ObjectPluginAction) action;
