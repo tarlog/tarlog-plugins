@@ -1,85 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-   <extension
-         point="org.eclipse.ui.popupMenus">
-      <objectContribution
-            adaptable="false"
-            id="tarlog-plugins.objectContribution.IResource"
-            objectClass="org.eclipse.core.resources.IResource">
-         <action
-               class="tarlog.eclipse.plugins.openwe.OpenInWindowsExplorerAction"
-               id="tarlog-plugins.action.openWindowsExplorer.iresource"
-               label="Open in Windows Explorer">
-         </action>
-         <action
-               class="tarlog.eclipse.plugins.openwe.OpenCommandPrompt"
-               id="tarlog-plugins.action2"
-               label="Open in Command Prompt">
-         </action>
-      </objectContribution>
-      <objectContribution
-            adaptable="false"
-            id="tarlog-plugins.objectContribution.IJavaElement"
-            objectClass="org.eclipse.jdt.core.IJavaElement">
-         <action
-               class="tarlog.eclipse.plugins.openwe.OpenInWindowsExplorerAction"
-               id="tarlog-plugins.action.openWindowsExplorer.iresource"
-               label="Open in Windows Explorer">
-         </action>
-         <action
-               class="tarlog.eclipse.plugins.openwe.OpenCommandPrompt"
-               id="tarlog-plugins.action2"
-               label="Open in Command Prompt">
-         </action>
-      </objectContribution>
-   </extension>
-   <extension
-         point="org.eclipse.ui.popupMenus">
-      <objectContribution
-            id="logme"
-            objectClass="org.eclipse.jdt.internal.ui.javaeditor.JavaEditor">
-         <action
-               class="tarlog.eclispe.plugins.logme.LogMeAction"
-               id="tarlog-plugins.logMeAction"
-               label="Log Me">
-         </action>
-      </objectContribution>
-   </extension>
-   <extension
-         point="org.eclipse.ui.editors.templates">
-      <template
-            autoinsert="true"
-            contextTypeId="java-statements"
-            description="Adds debug logging statement"
-            id="tarlog-plugins.template.debug"
-            name="debug">
-         <pattern>
-            if (logger.isDebugEnabled()) {
-    logger.debug(String.format("${cursor}"));
-}
+	<extension point="org.eclipse.ui.popupMenus">
+		<objectContribution adaptable="false"
+			id="tarlog-plugins.objectContribution.IResource" objectClass="org.eclipse.core.resources.IResource">
+			<action class="tarlog.eclipse.plugins.openwe.OpenInWindowsExplorerAction"
+				id="tarlog-plugins.action.openWindowsExplorer.iresource" label="Open in Windows Explorer">
+			</action>
+			<action class="tarlog.eclipse.plugins.openwe.OpenCommandPrompt"
+				id="tarlog-plugins.action2" label="Open in Command Prompt">
+			</action>
+		</objectContribution>
+		<objectContribution adaptable="false"
+			id="tarlog-plugins.objectContribution.IJavaElement" objectClass="org.eclipse.jdt.core.IJavaElement">
+			<action class="tarlog.eclipse.plugins.openwe.OpenInWindowsExplorerAction"
+				id="tarlog-plugins.action.openWindowsExplorer.iresource" label="Open in Windows Explorer">
+			</action>
+			<action class="tarlog.eclipse.plugins.openwe.OpenCommandPrompt"
+				id="tarlog-plugins.action2" label="Open in Command Prompt">
+			</action>
+		</objectContribution>
+	</extension>
+	<extension point="org.eclipse.ui.popupMenus">
+		<objectContribution id="logme"
+			objectClass="org.eclipse.jdt.internal.ui.javaeditor.JavaEditor">
+			<action class="tarlog.eclispe.plugins.logme.LogMeAction" id="tarlog-plugins.logMeAction"
+				label="Log Me">
+			</action>
+		</objectContribution>
+	</extension>
+	<extension point="org.eclipse.ui.editors.templates">
+		<template autoinsert="true" contextTypeId="java-statements"
+			description="Adds debug logging statement" id="tarlog-plugins.template.debug"
+			name="debug">
+			<pattern>
+				if (logger.isDebugEnabled()) {
+				logger.debug(String.format("${cursor}"));
+				}
          </pattern>
-      </template>
-      <template
-            autoinsert="true"
-            contextTypeId="java-members"
-            description="Adds logger for commons-logging"
-            id="tarlog-plugins.template.logger"
-            name="logger">
-         <pattern>
-            ${:import(org.apache.commons.logging.Log, org.apache.commons.logging.LogFactory)}
-private static final Log logger = LogFactory.getLog(${enclosing_type}.class);
+		</template>
+		<template autoinsert="true" contextTypeId="java-members"
+			description="Adds logger for commons-logging" id="tarlog-plugins.template.logger"
+			name="logger">
+			<pattern>
+				${:import(org.apache.commons.logging.Log,
+				org.apache.commons.logging.LogFactory)}
+				private static final Log
+				logger =
+				LogFactory.getLog(${enclosing_type}.class);
          </pattern>
-      </template>
-      <template
-            autoinsert="true"
-            contextTypeId="java-statements"
-            description="Adds trace logging statement"
-            id="tarlog-plugins.template.trace"
-            name="trace">
-         <pattern>
-            if (logger.isTraceEnabled()) {
-    logger.trace(String.format(&quot;${cursor}&quot;));
+		</template>
+		<template autoinsert="true" contextTypeId="java-statements"
+			description="Adds trace logging statement" id="tarlog-plugins.template.trace"
+			name="trace">
+			<pattern>
+				if (logger.isTraceEnabled()) {
+				logger.trace(String.format(&quot;${cursor}&quot;));
 }
          </pattern>
       </template>
@@ -123,6 +99,46 @@ private static final Log logger = LogFactory.getLog(${enclosing_type}.class);
             logger.warn(String.format(&quot;${cursor}&quot;));
          </pattern>
       </template>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+         <key
+			  sequence="M1+NUMPAD_ADD"
+			  commandId="tarlog.eclipse.plugins.commands.increaseFont"
+			  schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+			  contextId="org.eclipse.jdt.ui.javaEditorScope"
+			   />
+		<key
+			  sequence="M1+NUMPAD_SUBTRACT"
+			  commandId="tarlog.eclipse.plugins.commands.decreaseFont"
+			  schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+			  contextId="org.eclipse.jdt.ui.javaEditorScope" />
+   </extension>
+   <extension point="org.eclipse.ui.handlers">
+      <handler
+            class="tarlog.eclipse.plugins.handlers.IncreaseFontHandler"
+            commandId="tarlog.eclipse.plugins.commands.increaseFont">
+      </handler>
+      <handler
+            class="tarlog.eclipse.plugins.handlers.DecreaseFontHandler"
+            commandId="tarlog.eclipse.plugins.commands.decreaseFont">
+      </handler>
+   </extension>
+   <extension point="org.eclipse.ui.commands">
+      <category
+            id="tarlog.eclipse.plugins.commands.category"
+            name="Editor Commands">
+      </category>
+      <command
+            categoryId="tarlog.eclipse.plugins.commands.category"
+            id="tarlog.eclipse.plugins.commands.increaseFont"
+            name="Increase Font">
+      </command>
+      <command
+            categoryId="tarlog.eclipse.plugins.commands.category"
+            id="tarlog.eclipse.plugins.commands.decreaseFont"
+            name="Decrease Font">
+      </command>
    </extension>
 
 </plugin>
