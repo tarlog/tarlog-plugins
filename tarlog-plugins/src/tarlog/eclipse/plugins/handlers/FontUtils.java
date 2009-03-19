@@ -23,16 +23,16 @@ class FontUtils {
     }
 
     private static void changeFont(String qualifier, String key, int changeBy) {
-        IPreferencesService r = Platform.getPreferencesService();
-        String value = r.getString(qualifier, key, null, null);
-        FontData ary[] = PreferenceConverter.basicGetFontData(value);
+        IPreferencesService preferencesService = Platform.getPreferencesService();
+        String value = preferencesService.getString(qualifier, key, null, null);
+        FontData fontData[] = PreferenceConverter.basicGetFontData(value);
 
-        FontData fontdata = ary[0];
+        FontData fontdata = fontData[0];
         fontdata.setHeight(fontdata.getHeight() + changeBy);
-        Preferences n = r.getRootNode().node("/instance/" + qualifier);
-        n.put(key, fontdata.toString());
+        Preferences preferences = preferencesService.getRootNode().node("/instance/" + qualifier);
+        preferences.put(key, fontdata.toString());
         try {
-            n.flush();
+            preferences.flush();
         } catch (BackingStoreException e) {
         }
     }

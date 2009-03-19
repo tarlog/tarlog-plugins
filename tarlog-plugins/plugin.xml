@@ -21,14 +21,6 @@
 			</action>
 		</objectContribution>
 	</extension>
-	<extension point="org.eclipse.ui.popupMenus">
-		<objectContribution id="logme"
-			objectClass="org.eclipse.jdt.internal.ui.javaeditor.JavaEditor">
-			<action class="tarlog.eclispe.plugins.logme.LogMeAction" id="tarlog-plugins.logMeAction"
-				label="Log Me">
-			</action>
-		</objectContribution>
-	</extension>
 	<extension point="org.eclipse.ui.editors.templates">
 		<template autoinsert="true" contextTypeId="java-statements"
 			description="Adds debug logging statement" id="tarlog-plugins.template.debug"
@@ -106,13 +98,25 @@
 			  sequence="M1+NUMPAD_ADD"
 			  commandId="tarlog.eclipse.plugins.commands.increaseFont"
 			  schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-			  contextId="org.eclipse.jdt.ui.javaEditorScope"
+			  contextId="org.eclipse.ui.textEditorScope"
+			   />
+	     <key
+			  sequence="M1++"
+			  commandId="tarlog.eclipse.plugins.commands.increaseFont"
+			  schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+			  contextId="org.eclipse.ui.textEditorScope"
+			   />
+	     <key
+			  sequence="M1+-"
+			  commandId="tarlog.eclipse.plugins.commands.decreaseFont"
+			  schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+			  contextId="org.eclipse.ui.textEditorScope"
 			   />
 		<key
 			  sequence="M1+NUMPAD_SUBTRACT"
 			  commandId="tarlog.eclipse.plugins.commands.decreaseFont"
 			  schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-			  contextId="org.eclipse.jdt.ui.javaEditorScope" />
+			  contextId="org.eclipse.ui.textEditorScope" />
    </extension>
    <extension point="org.eclipse.ui.handlers">
       <handler
@@ -140,5 +144,8 @@
             name="Decrease Font">
       </command>
    </extension>
+   <!-- extension point="org.eclipse.ui.startup">
+     <startup class="tarlog.eclipse.plugins.StartUp"/>
+   </extension -->
 
 </plugin>
