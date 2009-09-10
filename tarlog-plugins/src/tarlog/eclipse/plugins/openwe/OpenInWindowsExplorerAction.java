@@ -30,7 +30,7 @@ public class OpenInWindowsExplorerAction extends TreeSelectionAction {
     @Override
     protected void doAction(String path) {
         try {
-            Runtime.getRuntime().exec("explorer ,/select, " + path);
+            Runtime.getRuntime().exec("explorer /select, " + path);
         } catch (IOException e) {
             e.printStackTrace();
         }

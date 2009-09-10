@@ -144,6 +144,20 @@
             name="Decrease Font">
       </command>
    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="tarlog.eclipse.plugins.preferences.TarlogPluginsPreferencePage"
+            id="tarlog.eclipse.plugins.preferences.TarlogPluginsPreferencePage"
+            name="Tarlog Plugins">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="tarlog.eclipse.plugins.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
    <!-- extension point="org.eclipse.ui.startup">
      <startup class="tarlog.eclipse.plugins.StartUp"/>
    </extension -->
