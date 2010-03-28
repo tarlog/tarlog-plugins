@@ -10,6 +10,9 @@
 			<action class="tarlog.eclipse.plugins.openwe.OpenCommandPrompt"
 				id="tarlog-plugins.action2" label="Open in Command Prompt">
 			</action>
+			<action class="tarlog.eclipse.plugins.openwe.CopyPath"
+				id="tarlog-plugins.action.copyPath" label="Copy Path">
+			</action>
 		</objectContribution>
 		<objectContribution adaptable="false"
 			id="tarlog-plugins.objectContribution.IJavaElement" objectClass="org.eclipse.jdt.core.IJavaElement">
@@ -18,6 +21,9 @@
 			</action>
 			<action class="tarlog.eclipse.plugins.openwe.OpenCommandPrompt"
 				id="tarlog-plugins.action2" label="Open in Command Prompt">
+			</action>
+			<action class="tarlog.eclipse.plugins.openwe.CopyPath"
+				id="tarlog-plugins.action.copyPath" label="Copy Path">
 			</action>
 		</objectContribution>
 	</extension>

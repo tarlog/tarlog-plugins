@@ -22,31 +22,27 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.TreeSelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.internal.ObjectPluginAction;
 
-@SuppressWarnings("restriction")
 public abstract class TreeSelectionAction implements IObjectActionDelegate {
+
+    private ISelection selection;
 
     protected TreeSelectionAction() {
         super();
     }
 
     public void run(IAction action) {
-        if (action instanceof ObjectPluginAction) {
-            ObjectPluginAction objectPluginAction = (ObjectPluginAction) action;
-            ISelection selection = objectPluginAction.getSelection();
-            if (selection instanceof TreeSelection) {
-                TreeSelection treeSelection = (TreeSelection) selection;
-                Object firstElement = treeSelection.getFirstElement();
-                if (firstElement instanceof IResource) {
-                    handleResource((IResource) firstElement);
-                } else if (firstElement instanceof IJavaElement) {
-                    IJavaElement javaElement = (IJavaElement) firstElement;
-                    handleJavaElement(javaElement);
-                }
+        if (selection instanceof IStructuredSelection) {
+            IStructuredSelection treeSelection = (IStructuredSelection)selection;
+            Object firstElement = treeSelection.getFirstElement();
+            if (firstElement instanceof IResource) {
+                handleResource((IResource)firstElement);
+            } else if (firstElement instanceof IJavaElement) {
+                IJavaElement javaElement = (IJavaElement)firstElement;
+                handleJavaElement(javaElement);
             }
         }
     }
@@ -71,12 +67,11 @@ public abstract class TreeSelectionAction implements IObjectActionDelegate {
     protected abstract void doAction(String path);
 
     public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-        // TODO Auto-generated method stub
 
     }
 
     public void selectionChanged(IAction action, ISelection selection) {
-        // TODO Auto-generated method stub
+        this.selection = selection;
 
     }
 
