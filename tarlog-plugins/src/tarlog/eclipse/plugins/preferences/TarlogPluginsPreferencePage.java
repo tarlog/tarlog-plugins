@@ -4,9 +4,11 @@ import java.io.IOException;
 
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.jface.text.templates.Template;
 import org.eclipse.jface.text.templates.persistence.TemplatePersistenceData;
 import org.eclipse.jface.text.templates.persistence.TemplateStore;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -24,18 +26,20 @@ import tarlog.eclipse.plugins.Activator;
  */
 
 public class TarlogPluginsPreferencePage extends FieldEditorPreferencePage implements
-    IWorkbenchPreferencePage {
+        IWorkbenchPreferencePage {
 
-    private static final String TEMPLATE_LOGGER_ID       = "tarlog-plugins.template.logger";
-    public static final String  COMMONS_LOGGING          = "commons-logging";
-    public static final String  SLF4J                    = "slf4j";
-    public static final String  LOGGER_NAME              = "loggerName";
+    public static final String OPEN_EXPLORER            = "openExplorer";
+    public static final String RUN_SHELL                = "runShell";
+    public static final String TEMPLATE_LOGGER_ID       = "tarlog-plugins.template.logger";
+    public static final String COMMONS_LOGGING          = "commons-logging";
+    public static final String SLF4J                    = "slf4j";
+    public static final String LOGGER_NAME              = "loggerName";
 
-    public static final String  COMMONS_LOGGING_TEMPLATE =
-                                                             "${:import(org.apache.commons.logging.Log,org.apache.commons.logging.LogFactory)}\n" + "private static final Log logger = LogFactory.getLog(${enclosing_type}.class);";
+    public static final String COMMONS_LOGGING_TEMPLATE = "${:import(org.apache.commons.logging.Log,org.apache.commons.logging.LogFactory)}\n"
+                                                                + "private static final Log logger = LogFactory.getLog(${enclosing_type}.class);";
 
-    public static final String  SLF4J_TEMPLATE           =
-                                                             "${:import(org.slf4j.Logger,org.slf4j.LoggerFactory)}\n" + "private static final Logger logger = LoggerFactory.getLogger(${enclosing_type}.class);";
+    public static final String SLF4J_TEMPLATE           = "${:import(org.slf4j.Logger,org.slf4j.LoggerFactory)}\n"
+                                                                + "private static final Logger logger = LoggerFactory.getLogger(${enclosing_type}.class);";
 
     public TarlogPluginsPreferencePage() {
         super(GRID);
@@ -49,12 +53,16 @@ public class TarlogPluginsPreferencePage extends FieldEditorPreferencePage imple
      */
     public void createFieldEditors() {
 
-        addField(new ComboFieldEditor(LOGGER_NAME, "Logger:", new String[][] { {"Slf4j", SLF4J},
-            {"Commons Logging", COMMONS_LOGGING}}, getFieldEditorParent()));
+        Composite parent = getFieldEditorParent();
+        addField(new ComboFieldEditor(LOGGER_NAME, "Logger:", new String[][] { { "Slf4j", SLF4J },
+                { "Commons Logging", COMMONS_LOGGING } }, parent));
+        addField(new StringFieldEditor(RUN_SHELL, "Run Shell Command: ", parent));
+        addField(new StringFieldEditor(OPEN_EXPLORER, "Open Explorer Command: ", parent));
     }
 
     /*
      * (non-Javadoc)
+     * 
      * @see
      * org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
      */
@@ -68,8 +76,8 @@ public class TarlogPluginsPreferencePage extends FieldEditorPreferencePage imple
 
         String loggerName = getPreferenceStore().getString(LOGGER_NAME);
         TemplateStore codeTemplateStore = Activator.getDefault().getCodeTemplateStore();
-        TemplatePersistenceData loggerTemplateData =
-            codeTemplateStore.getTemplateData(TEMPLATE_LOGGER_ID);
+        TemplatePersistenceData loggerTemplateData = codeTemplateStore
+                .getTemplateData(TEMPLATE_LOGGER_ID);
         if (loggerTemplateData != null) {
             codeTemplateStore.delete(loggerTemplateData);
         }
@@ -83,7 +91,8 @@ public class TarlogPluginsPreferencePage extends FieldEditorPreferencePage imple
         }
         try {
             codeTemplateStore.save();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -92,10 +101,7 @@ public class TarlogPluginsPreferencePage extends FieldEditorPreferencePage imple
     }
 
     private void addLogger(TemplateStore codeTemplateStore, String template, String frameworkName) {
-        codeTemplateStore
-            .add(new TemplatePersistenceData(new Template("logger",
-                                                          "Adds logger for " + frameworkName,
-                                                          "java-members", template, true), true,
-                                             TEMPLATE_LOGGER_ID));
+        codeTemplateStore.add(new TemplatePersistenceData(new Template("logger", "Adds logger for "
+                + frameworkName, "java-members", template, true), true, TEMPLATE_LOGGER_ID));
     }
 }

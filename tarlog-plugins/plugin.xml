@@ -5,41 +5,39 @@
 		<objectContribution adaptable="false"
 			id="tarlog-plugins.objectContribution.IResource" objectClass="org.eclipse.core.resources.IResource">
 			<action class="tarlog.eclipse.plugins.openwe.OpenInWindowsExplorerAction"
-				id="tarlog-plugins.action.openWindowsExplorer.iresource" label="Open in Windows Explorer">
+				id="tarlog-plugins.action.openWindowsExplorer.iresource" label="%action.label.openExplorer">
 			</action>
 			<action class="tarlog.eclipse.plugins.openwe.OpenCommandPrompt"
-				id="tarlog-plugins.action2" label="Open in Command Prompt">
+				id="tarlog-plugins.action2" label="%action.label.runShell">
 			</action>
 			<action class="tarlog.eclipse.plugins.openwe.CopyPath"
-				id="tarlog-plugins.action.copyPath" label="Copy Path">
+				id="tarlog-plugins.action.copyPath" label="%action.label.copyPath">
 			</action>
 		</objectContribution>
 		<objectContribution adaptable="false"
 			id="tarlog-plugins.objectContribution.IJavaElement" objectClass="org.eclipse.jdt.core.IJavaElement">
 			<action class="tarlog.eclipse.plugins.openwe.OpenInWindowsExplorerAction"
-				id="tarlog-plugins.action.openWindowsExplorer.iresource" label="Open in Windows Explorer">
+				id="tarlog-plugins.action.openWindowsExplorer.iresource" label="%action.label.openExplorer">
 			</action>
 			<action class="tarlog.eclipse.plugins.openwe.OpenCommandPrompt"
-				id="tarlog-plugins.action2" label="Open in Command Prompt">
+				id="tarlog-plugins.action2" label="%action.label.runShell">
 			</action>
 			<action class="tarlog.eclipse.plugins.openwe.CopyPath"
-				id="tarlog-plugins.action.copyPath" label="Copy Path">
+				id="tarlog-plugins.action.copyPath" label="%action.label.copyPath">
 			</action>
 		</objectContribution>
 	</extension>
 	<extension point="org.eclipse.ui.editors.templates">
 		<template autoinsert="true" contextTypeId="java-statements"
-			description="Adds debug logging statement" id="tarlog-plugins.template.debug"
-			name="debug">
+			description="%template.description" id="tarlog-plugins.template.debug"
+			name="%template.name">
 			<pattern>
-				if (logger.isDebugEnabled()) {
-				logger.debug(String.format("${cursor}"));
-				}
+				logger.debug("${cursor}");
          </pattern>
 		</template>
 		<template autoinsert="true" contextTypeId="java-members"
-			description="Adds logger for commons-logging" id="tarlog-plugins.template.logger"
-			name="logger">
+			description="%template.description.0" id="tarlog-plugins.template.logger"
+			name="%template.name.0">
 			<pattern>
 				${:import(org.apache.commons.logging.Log,
 				org.apache.commons.logging.LogFactory)}
@@ -49,20 +47,18 @@
          </pattern>
 		</template>
 		<template autoinsert="true" contextTypeId="java-statements"
-			description="Adds trace logging statement" id="tarlog-plugins.template.trace"
-			name="trace">
+			description="%template.description.1" id="tarlog-plugins.template.trace"
+			name="%template.name.1">
 			<pattern>
-				if (logger.isTraceEnabled()) {
-				logger.trace(String.format(&quot;${cursor}&quot;));
-}
+				logger.trace("${cursor}");
          </pattern>
       </template>
       <template
             autoinsert="true"
             contextTypeId="java-statements"
-            description="Adds format statement"
+            description="%template.description.2"
             id="tarlog-plugins.template.format"
-            name="format">
+            name="%template.name.2">
          <pattern>
             String.format(&quot;${cursor}&quot;))
          </pattern>
@@ -70,31 +66,31 @@
       <template
             autoinsert="true"
             contextTypeId="java-statements"
-            description="Adds info logging statement"
+            description="%template.description.3"
             id="tarlog-plugins.template.info"
-            name="info">
+            name="%template.name.3">
          <pattern>
-            logger.info(String.format(&quot;${cursor}&quot;));
+            logger.info("${cursor}");
          </pattern>
       </template>
       <template
             autoinsert="true"
             contextTypeId="java-statements"
-            description="Adds error logging statement"
+            description="%template.description.4"
             id="tarlog-plugins.template.error"
-            name="error">
+            name="%template.name.4">
          <pattern>
-            logger.error(String.format(&quot;${cursor}&quot;));
+            logger.error("${cursor}");
          </pattern>
       </template>
       <template
             autoinsert="true"
             contextTypeId="java-statements"
-            description="Adds warn logging statement"
+            description="%template.description.5"
             id="tarlog-plugins.template.warn"
-            name="warn">
+            name="%template.name.5">
          <pattern>
-            logger.warn(String.format(&quot;${cursor}&quot;));
+            logger.warn("${cursor}");
          </pattern>
       </template>
    </extension>
@@ -137,17 +133,17 @@
    <extension point="org.eclipse.ui.commands">
       <category
             id="tarlog.eclipse.plugins.commands.category"
-            name="Editor Commands">
+            name="%category.name">
       </category>
       <command
             categoryId="tarlog.eclipse.plugins.commands.category"
             id="tarlog.eclipse.plugins.commands.increaseFont"
-            name="Increase Font">
+            name="%command.name">
       </command>
       <command
             categoryId="tarlog.eclipse.plugins.commands.category"
             id="tarlog.eclipse.plugins.commands.decreaseFont"
-            name="Decrease Font">
+            name="%command.name.0">
       </command>
    </extension>
    <extension
@@ -155,7 +151,7 @@
       <page
             class="tarlog.eclipse.plugins.preferences.TarlogPluginsPreferencePage"
             id="tarlog.eclipse.plugins.preferences.TarlogPluginsPreferencePage"
-            name="Tarlog Plugins">
+            name="%page.name">
       </page>
    </extension>
    <extension

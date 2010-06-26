@@ -12,13 +12,15 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
     /*
      * (non-Javadoc)
+     * 
      * @seeorg.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#
      * initializeDefaultPreferences()
      */
     public void initializeDefaultPreferences() {
         IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-        store.setDefault(TarlogPluginsPreferencePage.LOGGER_NAME,
-                         TarlogPluginsPreferencePage.COMMONS_LOGGING);
+        store.setDefault(TarlogPluginsPreferencePage.LOGGER_NAME, TarlogPluginsPreferencePage.SLF4J);
+        store.setDefault(TarlogPluginsPreferencePage.RUN_SHELL, "cmd /c start cmd");
+        store.setDefault(TarlogPluginsPreferencePage.OPEN_EXPLORER, "explorer /select,  {0}");
     }
 
 }
