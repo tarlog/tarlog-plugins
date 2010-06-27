@@ -52,11 +52,10 @@ public class TarlogPluginsPreferencePage extends FieldEditorPreferencePage imple
      * editor knows how to save and restore itself.
      */
     public void createFieldEditors() {
-
         Composite parent = getFieldEditorParent();
         addField(new ComboFieldEditor(LOGGER_NAME, "Logger:", new String[][] { { "Slf4j", SLF4J },
                 { "Commons Logging", COMMONS_LOGGING } }, parent));
-        addField(new StringFieldEditor(RUN_SHELL, "Run Shell Command: ", parent));
+        addField(new StringFieldEditor(RUN_SHELL, "Open Shell Command: ", parent));
         addField(new StringFieldEditor(OPEN_EXPLORER, "Open Explorer Command: ", parent));
     }
 
