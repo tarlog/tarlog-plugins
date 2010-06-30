@@ -1,22 +1,23 @@
-/**
- *    Copyright 2008 Michael Elman (aka tarlog - http://tarlogonjava.blogspot.com) 
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
+/*******************************************************************************
+ *   Copyright 2008,2010 Michael Elman (aka tarlog - http://tarlogonjava.blogspot.com)
+ *                                                                                    
+ * Licensed under the Apache License, Version 2.0 (the "License");                    
+ * you may not use this file except in compliance with the License.                   
+ * You may obtain a copy of the License at                                            
+ *                                                                                    
+ *    http://www.apache.org/licenses/LICENSE-2.0                                      
+ *                                                                                    
+ * Unless required by applicable law or agreed to in writing, software                
+ * distributed under the License is distributed on an "AS IS" BASIS,                  
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.           
+ * See the License for the specific language governing permissions and                
+ * limitations under the License.                                                     
+ *******************************************************************************/
 package tarlog.eclipse.plugins.openwe;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.MessageFormat;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
@@ -49,9 +50,11 @@ public class OpenCommandPrompt extends TreeSelectionAction implements IPropertyC
                     path = parentFile.getAbsolutePath();
                 }
             }
-            Runtime.getRuntime().exec(command, null, new File(path));
-            // Runtime.getRuntime().exec("cmd /c start cmd /k \"cd /d" + path +
-            // "\"");
+            if (command.indexOf("{0}") >= 0) {
+                Runtime.getRuntime().exec(MessageFormat.format(command, path));
+            } else {
+                Runtime.getRuntime().exec(command, null, new File(path));
+            }
         }
         catch (IOException e) {
             e.printStackTrace();
