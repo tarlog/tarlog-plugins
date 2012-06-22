@@ -41,12 +41,13 @@ public class DependenciesDialog extends TitleAreaDialog {
 	private TableViewer	              newPropertiesTableViewer;
 	private final Properties	      existingProperties;
 	private final Properties	      newProperties	= new Properties();
+	private final Model	              mavenModel;
 
 	private final List<RowDependency>	tableModel;
 
 	public DependenciesDialog(Shell parentShell, Model model) {
 		super(parentShell);
-
+		mavenModel = model;
 		existingProperties = model.getProperties();
 		tableModel = createTableModel(model);
 
@@ -135,7 +136,14 @@ public class DependenciesDialog extends TitleAreaDialog {
 
 	@Override
 	protected void okPressed() {
-		// TODO: update model
+		for (Entry<Object, Object> entry : newProperties.entrySet()) {
+			mavenModel.addProperty((String) entry.getKey(), (String) entry.getValue());
+		}
+		for (RowDependency rd : tableModel) {
+			if (rd.checked) {
+				rd.dependency.setVersion("${" + rd.versionProperty + "}");
+			}
+		}
 		super.okPressed();
 	}
 

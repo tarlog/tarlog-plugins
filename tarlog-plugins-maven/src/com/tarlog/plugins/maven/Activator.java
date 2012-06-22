@@ -9,6 +9,14 @@ import org.osgi.framework.BundleContext;
  */
 public class Activator extends AbstractUIPlugin {
 
+	/*
+	 * More features:
+	 *  * Sort Properties
+	 *  * Sort Dependencies
+	 *  * Move Versioning to Dependency Management
+	 *  * Move Dependency Management to parent
+	 */
+	
 	// The plug-in ID
 	public static final String PLUGIN_ID = "tarlog-plugins-maven"; //$NON-NLS-1$
 
