@@ -13,12 +13,15 @@ import java.util.regex.Pattern;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.EditingSupport;
+import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.TextCellEditor;
@@ -33,13 +36,13 @@ import org.eclipse.swt.widgets.Table;
 
 public class DependenciesDialog extends TitleAreaDialog {
 
-	private static final Pattern DOT_PATTERN = Pattern.compile("\\.");
-	private CheckboxTableViewer dependenciesTableViewer;
-	private TableViewer newPropertiesTableViewer;
-	private final Properties existingProperties;
-	private final Properties newProperties = new Properties();
+	private static final Pattern	  DOT_PATTERN	= Pattern.compile("\\.");
+	private CheckboxTableViewer	      dependenciesTableViewer;
+	private TableViewer	              newPropertiesTableViewer;
+	private final Properties	      existingProperties;
+	private final Properties	      newProperties	= new Properties();
 
-	private final List<RowDependency> tableModel;
+	private final List<RowDependency>	tableModel;
 
 	public DependenciesDialog(Shell parentShell, Model model) {
 		super(parentShell);
@@ -53,8 +56,7 @@ public class DependenciesDialog extends TitleAreaDialog {
 	protected Control createContents(Composite parent) {
 		Control contents = super.createContents(parent);
 		setTitle("Dependencies");
-		setMessage("List of depenencies to be replaced with properties",
-				IMessageProvider.INFORMATION);
+		setMessage("List of depenencies to be replaced with properties", IMessageProvider.INFORMATION);
 		return contents;
 	}
 
@@ -62,17 +64,14 @@ public class DependenciesDialog extends TitleAreaDialog {
 		List<RowDependency> list = new ArrayList<DependenciesDialog.RowDependency>();
 		Map<String, Map<String, Dependency>> toreplace = new HashMap<String, Map<String, Dependency>>();
 		findDependenciesToReplace(toreplace, model.getDependencies());
-		findDependenciesToReplace(toreplace, model.getDependencyManagement()
-				.getDependencies());
-		for (Entry<String, Map<String, Dependency>> entry : toreplace
-				.entrySet()) {
+		findDependenciesToReplace(toreplace, model.getDependencyManagement().getDependencies());
+		for (Entry<String, Map<String, Dependency>> entry : toreplace.entrySet()) {
 			// if all artifacts in the same group have a single version,
 			// propose a single replacement
 			final Map<String, Dependency> group = entry.getValue();
 			String prevVersion = null;
 			int groupIndex = list.size();
-			for (Iterator<Dependency> iterator = group.values().iterator(); iterator
-					.hasNext();) {
+			for (Iterator<Dependency> iterator = group.values().iterator(); iterator.hasNext();) {
 				Dependency d = iterator.next();
 				final String version = d.getVersion();
 				if (prevVersion == null) {
@@ -88,8 +87,7 @@ public class DependenciesDialog extends TitleAreaDialog {
 					}
 				} else if (prevVersion.equals(version)) {
 					// same version, in the group
-					list.add(new RowDependency(d, list.get(list.size() - 1)
-							.getVersionProperty()));
+					list.add(new RowDependency(d, list.get(list.size() - 1).getVersionProperty()));
 				} else {
 					// not same version
 					// need to change the whole group!
@@ -97,8 +95,7 @@ public class DependenciesDialog extends TitleAreaDialog {
 						list.get(i).uniqueVersion(VersioningType.ARTIFACT);
 					}
 					while (iterator.hasNext()) {
-						list.add(new RowDependency(iterator.next(),
-								VersioningType.ARTIFACT));
+						list.add(new RowDependency(iterator.next(), VersioningType.ARTIFACT));
 					}
 				}
 			}
@@ -107,8 +104,7 @@ public class DependenciesDialog extends TitleAreaDialog {
 	}
 
 	private Map<String, Map<String, Dependency>> findDependenciesToReplace(
-			Map<String, Map<String, Dependency>> toreplace,
-			final List<Dependency> dependencies) {
+	        Map<String, Map<String, Dependency>> toreplace, final List<Dependency> dependencies) {
 		for (Dependency dependency : dependencies) {
 			final String version = dependency.getVersion();
 			if (!version.startsWith("${")) {
@@ -128,21 +124,24 @@ public class DependenciesDialog extends TitleAreaDialog {
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite composite = (Composite) super.createDialogArea(parent);
-		Label dependenciesLabel = new Label(composite, SWT.LEFT
-				| SWT.HORIZONTAL);
+		Label dependenciesLabel = new Label(composite, SWT.LEFT | SWT.HORIZONTAL);
 		dependenciesLabel.setText("Dependencies:");
 		createDependenciesTable(composite);
-		Label newPropertiesLabel = new Label(composite, SWT.LEFT
-				| SWT.HORIZONTAL);
+		Label newPropertiesLabel = new Label(composite, SWT.LEFT | SWT.HORIZONTAL);
 		newPropertiesLabel.setText("New Properties:");
 		createNewPropertiesTable(composite);
 		return composite;
 	}
 
+	@Override
+	protected void okPressed() {
+		// TODO: update model
+		super.okPressed();
+	}
+
 	private void createDependenciesTable(Composite composite) {
-		dependenciesTableViewer = CheckboxTableViewer.newCheckList(composite,
-				SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION
-						| SWT.BORDER);
+		dependenciesTableViewer = CheckboxTableViewer.newCheckList(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL
+		        | SWT.FULL_SELECTION | SWT.BORDER);
 
 		final Table table = dependenciesTableViewer.getTable();
 		table.setHeaderVisible(true);
@@ -152,8 +151,7 @@ public class DependenciesDialog extends TitleAreaDialog {
 		createArtifactColumn(dependenciesTableViewer);
 		createVersionPropertyColumn();
 
-		dependenciesTableViewer.setContentProvider(ArrayContentProvider
-				.getInstance());
+		dependenciesTableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		dependenciesTableViewer.setInput(tableModel);
 		dependenciesTableViewer.setAllChecked(true);
 		dependenciesTableViewer.setComparator(new ViewerComparator() {
@@ -161,15 +159,35 @@ public class DependenciesDialog extends TitleAreaDialog {
 			public int compare(Viewer viewer, Object e1, Object e2) {
 				RowDependency rd1 = (RowDependency) e1;
 				RowDependency rd2 = (RowDependency) e2;
-				return rd1.dependency.getGroupId().compareToIgnoreCase(
-						rd2.dependency.getGroupId());
+				return rd1.dependency.getGroupId().compareToIgnoreCase(rd2.dependency.getGroupId());
+			}
+		});
+		dependenciesTableViewer.addCheckStateListener(new ICheckStateListener() {
+
+			@Override
+			public void checkStateChanged(CheckStateChangedEvent event) {
+				RowDependency rd = (RowDependency) event.getElement();
+				rd.checked = event.getChecked();
+				List<RowDependency> sameProperties = getSameProperties(rd);
+				if (rd.checked) {
+					// checked, add to properties
+					if (sameProperties.isEmpty()) {
+						newProperties.setProperty(rd.versionProperty, rd.dependency.getVersion());
+					}
+				} else {
+					// unchecked, remove from properties
+					if (sameProperties.isEmpty()) {
+						newProperties.remove(rd.versionProperty);
+					}
+				}
+				newPropertiesTableViewer.refresh();
 			}
 		});
 	}
 
 	private void createNewPropertiesTable(Composite composite) {
-		newPropertiesTableViewer = new TableViewer(composite, SWT.MULTI
-				| SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
+		newPropertiesTableViewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL
+		        | SWT.FULL_SELECTION | SWT.BORDER);
 
 		final Table table = newPropertiesTableViewer.getTable();
 		table.setHeaderVisible(true);
@@ -178,8 +196,7 @@ public class DependenciesDialog extends TitleAreaDialog {
 		createPropertyName(newPropertiesTableViewer);
 		createPropertyValue(newPropertiesTableViewer);
 
-		newPropertiesTableViewer
-				.setContentProvider(PropertiesConentProvider.instance);
+		newPropertiesTableViewer.setContentProvider(PropertiesConentProvider.instance);
 		newPropertiesTableViewer.setInput(newProperties);
 		newPropertiesTableViewer.setComparator(new ViewerComparator() {
 			@SuppressWarnings("unchecked")
@@ -251,8 +268,7 @@ public class DependenciesDialog extends TitleAreaDialog {
 	}
 
 	private void createVersionPropertyColumn() {
-		TableViewerColumn col = new TableViewerColumn(dependenciesTableViewer,
-				SWT.NONE);
+		TableViewerColumn col = new TableViewerColumn(dependenciesTableViewer, SWT.NONE);
 		col.getColumn().setWidth(200);
 		col.getColumn().setText("Property");
 		col.setLabelProvider(new ColumnLabelProvider() {
@@ -270,8 +286,40 @@ public class DependenciesDialog extends TitleAreaDialog {
 				RowDependency d = (RowDependency) element;
 				String oldProperty = d.getVersionProperty();
 				String newProperty = (String) value;
-				String version = (String) newProperties.remove(oldProperty);
-				newProperties.setProperty(newProperty, version);
+				if (oldProperty.equals(newProperty)) {
+					return;
+				}
+				if (newProperties.getProperty(newProperty) != null
+				        || existingProperties.getProperty(newProperty) != null) {
+					if (!MessageDialog.openConfirm(getShell(), "Property Already Exists", "The property with a name '"
+					        + newProperty + "' already exists. \nDo you want to proceed?")) {
+						return;
+					}
+				}
+
+				// does it effect other properties?
+				List<RowDependency> sameProperties = getSameProperties(d);
+				if (!sameProperties.isEmpty()) {
+					// change all?
+					if (MessageDialog.openQuestion(getShell(), "Property Used For Multiple artifacts",
+					        "Update property also for the following artifacts:\n"
+					                + createArtifactListAsString(sameProperties))) {
+						// change for all
+						for (RowDependency rd : sameProperties) {
+							rd.setVersionProperty(newProperty);
+						}
+						String version = (String) newProperties.remove(oldProperty);
+						newProperties.setProperty(newProperty, version);
+					} else {
+						// change for one
+						String version = newProperties.getProperty(oldProperty);
+						newProperties.setProperty(newProperty, version);
+					}
+				} else {
+					String version = (String) newProperties.remove(oldProperty);
+					newProperties.setProperty(newProperty, version);
+				}
+
 				d.setVersionProperty(newProperty);
 				dependenciesTableViewer.refresh();
 				newPropertiesTableViewer.refresh();
@@ -295,12 +343,25 @@ public class DependenciesDialog extends TitleAreaDialog {
 		});
 	}
 
-	private final class RowDependency {
-		private final Dependency dependency;
-		private String versionProperty;
+	private List<RowDependency> getSameProperties(RowDependency dependency) {
+		String property = dependency.getVersionProperty();
+		List<RowDependency> sameProperty = new ArrayList<DependenciesDialog.RowDependency>();
+		for (RowDependency rd : tableModel) {
+			if (rd != dependency) {
+				if (rd.checked && rd.versionProperty.equals(property)) {
+					sameProperty.add(rd);
+				}
+			}
+		}
+		return sameProperty;
+	}
 
-		public RowDependency(Dependency dependency,
-				VersioningType versioningType) {
+	private final class RowDependency {
+		private final Dependency	dependency;
+		private String		     versionProperty;
+		private boolean		     checked	= true;
+
+		public RowDependency(Dependency dependency, VersioningType versioningType) {
 			this.dependency = dependency;
 			uniqueVersion(versioningType);
 		}
@@ -312,14 +373,14 @@ public class DependenciesDialog extends TitleAreaDialog {
 			}
 
 			// failed to build version using the versioning type, try full name
-			baseVersion = getBriefGroupId(dependency.getGroupId()) + "."
-					+ dependency.getArtifactId();
+			// with brief groupId
+			baseVersion = getBriefGroupId(dependency.getGroupId()) + "." + dependency.getArtifactId();
 			if (tryToSetVersion(baseVersion)) {
 				return;
 			}
 
-			baseVersion = dependency.getGroupId() + "."
-					+ dependency.getArtifactId();
+			// try full groupId
+			baseVersion = dependency.getGroupId() + "." + dependency.getArtifactId();
 			if (tryToSetVersion(baseVersion)) {
 				return;
 			}
@@ -336,9 +397,8 @@ public class DependenciesDialog extends TitleAreaDialog {
 		private boolean tryToSetVersion(String baseVersion) {
 			String versionCandidate = baseVersion + "-version";
 			if (existingProperties.getProperty(versionCandidate) == null
-					&& newProperties.getProperty(versionCandidate) == null) {
-				newProperties.setProperty(versionCandidate,
-						dependency.getVersion());
+			        && newProperties.getProperty(versionCandidate) == null) {
+				newProperties.setProperty(versionCandidate, dependency.getVersion());
 				versionProperty = versionCandidate;
 				return true;
 			}
@@ -378,6 +438,17 @@ public class DependenciesDialog extends TitleAreaDialog {
 		};
 
 		public abstract String getBaseVersion(Dependency dependency);
+	}
+
+	private static String createArtifactListAsString(List<RowDependency> dependencies) {
+		StringBuilder buf = new StringBuilder();
+		for (RowDependency rd : dependencies) {
+			buf.append(rd.dependency.getGroupId());
+			buf.append(':');
+			buf.append(rd.dependency.getArtifactId());
+			buf.append('\n');
+		}
+		return buf.toString();
 	}
 
 	private static String getBriefGroupId(String groupId) {
