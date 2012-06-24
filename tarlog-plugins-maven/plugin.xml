@@ -9,8 +9,11 @@
                id="tarlog-plugins.objectContribution.IResource"
                nameFilter="pom.xml"
                objectClass="org.eclipse.core.resources.IFile">
-			<action class="com.tarlog.plugins.maven.DependencyVersionsToProperties"
-				id="tarlog-plugins.action.openWindowsExplorer.iresource" label="Dependecy To Properties">
+			<action
+         class="com.tarlog.plugins.maven.DependencyVersionsToProperties"
+         id="tarlog-plugins.action.openWindowsExplorer.iresource"
+         label="Dependecy To Properties"
+         menubarPath="Maven">
 			</action>
 			
 		</objectContribution>
